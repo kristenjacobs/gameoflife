@@ -1,0 +1,44 @@
+<project name="gameoflife" default="dist" basedir=".">
+
+  <property name="src" location="src"/>
+  <property name="bin" location="bin"/>
+  
+  <target name="init">
+    <tstamp/>
+    <mkdir dir="${bin}"/>
+  </target>
+
+  <target name="compile" depends="init" description="compile the source">
+    <depend srcdir="${src}" destdir="${bin}"
+           closure="true" />
+       <javac includeantruntime="false" 
+           srcdir="${src}" destdir="${bin}"
+           deprecation="true"
+           debug="true"
+           debuglevel="lines,vars,source"
+    	   target="1.7">
+           <classpath>
+             <fileset dir="jars/">
+                 <include name="**/*.jar"/>
+             </fileset>
+           </classpath>
+    </javac>
+  </target>
+
+  <target name="dist" depends="compile" description="generate the distribution" >
+    <mkdir dir="jars"/>
+
+    <jar jarfile="jars/gameoflife.jar"
+         basedir="${bin}"
+         manifest="manifests/gameoflife">
+         <zipfileset src="jars/swt.jar"/>
+    </jar>
+  </target>
+
+  <target name="clean" description="clean up" >
+    <delete dir="${bin}"/>
+  	<delete file="jars/gameoflife.jar"/>
+  </target>
+
+</project>
+
